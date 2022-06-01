@@ -124,7 +124,7 @@
   (let [url (:tarball test)
         local-file (second (re-find #"file://(.+)" url))
         tpath (if local-file "file:///tmp/cassandra.tar.gz" url)]
-    (install-jdk-with-retry)
+    ;; (install-jdk-with-retry)
     (info node "installing Cassandra from" url)
     (do (when local-file
           (c/upload local-file "/tmp/cassandra.tar.gz"))
@@ -211,7 +211,7 @@
     (c/exec (lit (str (:cassandra-dir test) "/bin/cqlsh " node))
             :-e (lit "'describe cluster'"))
     (catch Exception e
-      (info (str "wating for " node))
+      (info (str "waiting for " node))
       (Thread/sleep (* interval-sec 1000))
       (if (>= timeout-sec interval-sec)
         (wait-ready node (- timeout-sec interval-sec) interval-sec test)
@@ -224,7 +224,7 @@
         starting-nodes (filter #(not (contains? @decommissioned %)) nodes)
         ready-nodes (take-while #(not= % node) starting-nodes)]
     (when-not (@decommissioned node)
-      (mapv #(wait-ready % 300 10 test) ready-nodes))))
+      (mapv #(wait-ready % 1200 10 test) ready-nodes))))
 
 (defn db
   "Setup Cassandra."

@@ -4,3 +4,5 @@ pom.xml
 */store/**
 */report/**
 */resources/ledger*
+cassandra/.lsp/**
+cassandra/.clj-kondo/**
